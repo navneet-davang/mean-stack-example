@@ -1,4 +1,4 @@
-FROM node:17-slim AS build
+FROM node:18-slim AS build
 
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
@@ -7,5 +7,6 @@ COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
 
+EXPOSE 4200
 # Run the web service on container startup.
 CMD ["npm", "start"]
