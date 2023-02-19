@@ -1,12 +1,10 @@
-FROM node:18-slim AS build
-
-WORKDIR /usr/src/app
-COPY package.json package-lock.json ./
-
-# Install dependencies and copy them to the container
-RUN npm install
+# stage 1
+FROM node:latest as node
+WORKDIR /app
 COPY . .
+RUN npm install
+RUN npm run build --prod
 
-EXPOSE 4200
-# Run the web service on container startup.
-CMD ["npm", "start"]
+# stage 2
+FROM nginx:alpine
+COPY --from=node /app/dist/client /usr/share/nginx/html
